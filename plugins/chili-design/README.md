@@ -11,7 +11,7 @@ Claude plugin **chili-design** for Chili Labs designers working on existing prod
 | `feature-update` | via menu | Change an existing screen, component or part of a flow; 1 variant by default, more on request |
 | `flow-builder` | via menu | New or substantially reworked flow |
 | `ui-variations` | via menu | Concepts for a new feature; you choose how many (default 3, up to 5) |
-| `design-qa` | via menu | Check finished screens against the task |
+| `design-qa` | via menu | Check finished screens against the task; state matrix per screen: default, empty, loading, error, offline, long text |
 | `wireframe` | menu → «Wireframe in chat» | Low-fi wireframes in the chat; «move to Figma» hands off to the design skill |
 | `pattern-research` | menu → Mobbin / «Research and directions» | Mobbin research: examples, patterns, directions |
 | `design-validate` | auto at the end of build · «validate» | Spacing on the scale, named layers, tokens and text styles bound — report first, fixes after confirmation, only on Playground AI frames |
@@ -22,7 +22,7 @@ Claude plugin **chili-design** for Chili Labs designers working on existing prod
 
 Every design decision and QA finding ends with a short source: (NN/g), (WCAG 2.5.8), (Fitts's law).
 
-Menu: task type → product → platforms → **how we work** (analysis / wireframe in chat / Figma) → **UI approach** (strict design system / + improvements / new visual) → **references** (mine / Mobbin / ui-craft taste / UI/UX Pro Max, several allowed) → number of variants. Project type (existing or from scratch) is set once in project setup and changes the menu defaults.
+Menu: task type → product → platforms → **how we work** (analysis / wireframe in chat / Figma) → **UI approach** (strict design system / + improvements / new visual) → **references** (mine / Mobbin / ui-craft taste / UI/UX Pro Max, several allowed) → number of variants. From the second task of the same type the last four collapse into one question: **«Same as last time»** or «Change». Project type (existing or from scratch) is set once in project setup and changes the menu defaults.
 
 Rules for every workflow: new screens only on the **«Playground AI»** page (one section per task), existing screens are never edited unless you ask. Copy inside mockups is in the project UI language; page, section, frame names, annotations and labels in Figma are always English. The chat stays in Russian.
 
@@ -52,8 +52,31 @@ Project files (`CLAUDE.md`, `context/`) live only in the project folder — neve
 
 ## For the maintainer: updating skills
 1. Edit files in `plugins/chili-design/skills/…`.
-2. Bump `version` in `plugins/chili-design/.claude-plugin/plugin.json` (e.g. 0.2.0 → 0.2.1) — Claude only detects an update when the version changes.
-3. GitHub Desktop → Summary → **Commit to main** → **Push origin**.
+2. Bump `version` in `plugins/chili-design/.claude-plugin/plugin.json` (e.g. 0.2.0 → 0.2.1) — Claude only detects an update when the version changes — and add a changelog entry.
+3. Run the tests (below), then build: `bash scripts/build-plugin.sh` → `chili-design.plugin` in the repo root.
+4. GitHub Desktop → Summary → **Commit to main** → **Push origin**.
+
+## Tests
+**Static checks** — free, a few seconds, no model calls. Needs Node.js; or ask Claude with this folder connected: «run the plugin checks».
+```
+node scripts/check-plugin.mjs
+```
+Fails on: version not bumped after a change, skill name ≠ folder or equal to a built-in command, broken links between files, a skill that is referenced but missing, missing config keys, README out of date, malformed eval cases, a skill with no eval case.
+
+**Behaviour evals** — `plugins/chili-design/evals/`, 21 cases in the `claude plugin eval` format (Claude Code 2.1.269+). Every run is a real model call on your account.
+```
+cd plugins/chili-design
+claude plugin eval . --runs 1 --ablation none --scaffold     # quick regression: 21 runs
+claude plugin eval . --tag trigger --runs 1 --ablation none   # only «the phrase starts the right skill»
+claude plugin eval . --scaffold                               # full: 3 runs per case + no-plugin baseline
+```
+- `evals/trigger/` — 14 designer phrases, each must start the right skill («новая задача» → `new-task`, «сделай короче» → `concise`…).
+- `evals/negative/` — 2 unrelated requests that must start no skill.
+- `evals/branch/` — 5 routing cases: project not configured → points to setup; «check the frame» → `design-validate` without the menu; configured project → summary routes to `feature-update`; «same as last time» reuses `task_defaults`; `design-qa` builds the state matrix. Two of them create a demo project with `scaffold.sh`, hence `--scaffold`.
+- New skill or new branch → add a case: copy a folder, change `prompt.md` and `graders/`.
+- Figma, Jira and Mobbin are not connected inside an eval run — the cases test routing and text output, not drawing.
+- An eval run does not load a project's `CLAUDE.md`. The two scaffold cases pass its «start every task with new-task» rule through `append_system_prompt`; without that rule a fully described task goes straight to `feature-update` and skips the menu and the summary.
+- Last full run: 0.18.0, 2026-11-15 — 21 of 21 passed (`--runs 1 --ablation none --scaffold`, about $1.4 at list price).
 
 ## Structure
 ```
@@ -74,10 +97,19 @@ plugins/chili-design/
   references/taste/chili/ideas.md      opt-in: idea bank from Chili projects
   references/taste/chili/projects/*.md   project cards: balcia, totherescue, rover, ganbei, twino
   references/writing.md                Writing rules: short, no filler, length limits
+  references/state-matrix.md           State matrix: screen × default / empty / loading / error / offline / long text, cell values, severity
   references/chili-ds-template.md      Chili mobile DS template: tokens, type scale, spacing, effects, grids, component naming
+  evals/                               behaviour tests for `claude plugin eval` (not packaged into the .plugin)
+scripts/check-plugin.mjs               static checks
+scripts/build-plugin.sh                checks + builds chili-design.plugin
 ```
 
 ## Changelog
+**0.18.0**
+- `new-task`: **«Same as last time»**. The answers to UI approach, references, creativity and variants are saved per work type in `task_defaults.last` of the project config; the next task of that type asks one question instead of up to four. «Change» opens the full menu; «reset task settings» clears the saved answers; `task_defaults.remember: false` switches it off. Reference links and images are never saved.
+- `design-qa`: **state matrix** — every screen the task touches × default / empty / loading / error / offline / long text (`references/state-matrix.md`). Missing cells become findings with severity; QA offers to add the missing states and hands off to the build skill.
+- **Tests**: `scripts/check-plugin.mjs` (static checks, no model calls) and `evals/` — 21 cases for `claude plugin eval` (14 trigger phrases, 2 negative, 5 routing branches). `scripts/build-plugin.sh` runs the checks and builds the `.plugin`.
+
 **0.17.1**
 - Skill `skills` renamed to `project-skills`: `/skills` is a built-in Claude command (lists all skills), so the bare name collided. Commands are documented in short form (`/menu`, `/project-skills`) with the always-working full form `/chili-design:<skill>`.
 

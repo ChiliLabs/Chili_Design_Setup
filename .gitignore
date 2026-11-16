@@ -5,3 +5,6 @@
 
 # Packaged plugin (share separately, not in git)
 *.plugin
+
+# Eval run output
+plugins/chili-design/evals/results/

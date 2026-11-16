@@ -35,6 +35,10 @@ external_skills: []           # filled by /project-skills — skills from other 
 #    stage: references                  # references | build | review | manual
 default_mode: ask              # ask | analyze | wireframe | build
 default_ui_approach: auto      # auto (system for existing, free for greenfield) | system | extend | free
+task_defaults:                 # «Same as last time» in new-task — answers to UI approach, references, creativity, variants
+  remember: true               # false = always ask the full menu
+  last: {}                     # written by new-task after each task, one entry per work type id — not edited by hand
+#    feature-update: {ui: system, references: [], creative: safe, variants: 1, updated: 2026-01-31}
 output:
   page_name: Playground AI
   section_naming: "<KEY> — <short title> — <YYYY-MM-DD>"   # English; no key → "<short title> — <YYYY-MM-DD>"

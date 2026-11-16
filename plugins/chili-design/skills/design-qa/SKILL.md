@@ -1,6 +1,6 @@
 ---
 name: design-qa
-description: Review updated Figma screens against a Jira issue and approved design system; report defects and gaps without editing. Use before designer approval or development handoff.
+description: Review updated Figma screens against a Jira issue and approved design system; report defects and gaps without editing, including a state matrix (default, empty, loading, error, offline, long text) for every screen the task touches. Use before designer approval or development handoff.
 argument-hint: "[Jira URL] [Figma frame or draft page URL]"
 ---
 
@@ -14,9 +14,10 @@ UX quality: check against `../../references/ux-principles.md` (relative to this 
 
 1. Read task acceptance criteria and specified frames only. Compare with approved patterns and necessary components.
 2. For the technical part (spacing scale, layer names, tokens/styles bound) run skill `design-validate` in report-only mode — QA never fixes.
-3. Check scope, state coverage relevant to task, component reuse, typography/spacing consistency, copy overflow, obvious interaction gaps, and language (UI copy in `language.ui`; names, annotations, labels in English).
-4. Classify findings: blocker / should fix / optional improvement. Distinguish observed issues from hypotheses.
-5. Report verified checks, things not testable in Figma, and questions for PM/dev.
-6. Do not edit design or expand to a full app audit unless explicitly requested.
+3. Build the state matrix (`../../references/state-matrix.md`): one row per screen the task touches; columns Default · Empty · Loading · Error · Offline · Long text; cells `✓` frame / `✗` missing / `global` shared pattern / `n/a` + reason / `?` question. Every `✗` becomes a finding with the severity from that file. Screens given as a text description instead of frames → build the matrix from the description and say it was not checked in Figma.
+4. Check scope, component reuse, typography/spacing consistency, copy overflow, obvious interaction gaps, and language (UI copy in `language.ui`; names, annotations, labels in English).
+5. Classify findings: blocker / should fix / optional improvement. Distinguish observed issues from hypotheses.
+6. Report verified checks, things not testable in Figma, and questions for PM/dev.
+7. Do not edit design or expand to a full app audit unless explicitly requested. Missing states are reported, not drawn — end with «Add the missing states?»; on yes hand off to the work type's build skill (`feature-update` or `flow-builder`, `mode=build`) with the list of `✗` cells.
 
-Output a concise checklist with frame references and clear evidence. Never claim accessibility, localization or device testing was completed unless it was actually performed.
+Output: the state matrix first, then a concise checklist with frame references and clear evidence. Never claim accessibility, localization or device testing was completed unless it was actually performed.
