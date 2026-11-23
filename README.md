@@ -79,7 +79,7 @@ claude plugin eval . --scaffold                               # full: 3 runs per
 .claude-plugin/marketplace.json        catalog (one plugin)
 plugins/chili-design/
   .claude-plugin/plugin.json           name + version
-  skills/<skill>/SKILL.md              13 skills
+  skills/<skill>/SKILL.md              14 skills
   skills/project-setup/templates/      CLAUDE.md, SETUP_CHECKLIST.md, context/*.md for new projects
   references/ux-principles.md          UX/UI best practices used by the design and QA skills
   references/wcag-2.2.md               WCAG 2.2 AA checklist for designers

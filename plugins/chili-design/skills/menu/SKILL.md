@@ -40,6 +40,7 @@ Chili workflows (usually started by /new-task)
   /ui-craft — stronger visual: hierarchy, type, colour, states
   /design-qa — check screens against the task
   /design-validate — spacing, tokens, layer names
+  /chili-brand — Chili decks, posts and covers in our brand style
   /concise — shorten any text
 
 Connected to this project

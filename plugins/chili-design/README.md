@@ -15,6 +15,7 @@ Claude plugin **chili-design** for Chili Labs designers working on existing prod
 | `wireframe` | menu → «Wireframe in chat» | Low-fi wireframes in the chat; «move to Figma» hands off to the design skill |
 | `pattern-research` | menu → Mobbin / «Research and directions» | Mobbin research: examples, patterns, directions |
 | `design-validate` | auto at the end of build · «validate» | Spacing on the scale, named layers, tokens and text styles bound — report first, fixes after confirmation, only on Playground AI frames |
+| `chili-brand` | «presentation in our style», «post for Instagram» | Chili Labs' own decks, slides, posts and covers by the brandbook: light bento / dark photo / poster modes or a mix, layout exploration in the central block, brand rules instead of UI «avoid AI» bans |
 | `concise` | «make it shorter» | Rewrites any text short and without filler (Jira, Figma, Slack, client); all skills follow the same writing rules |
 | `ui-craft` | menu → «New visual», «DS + improvements», «UI foundation» | Strong visual UI from chosen references; UI foundation for new products |
 | `menu` | «/menu», «what can you do» | All commands, connected skills and other skills available to you — one line each |
@@ -83,7 +84,7 @@ claude plugin eval . --scaffold                               # full: 3 runs per
 .claude-plugin/marketplace.json        catalog (one plugin)
 plugins/chili-design/
   .claude-plugin/plugin.json           name + version
-  skills/<skill>/SKILL.md              13 skills
+  skills/<skill>/SKILL.md              14 skills
   skills/project-setup/templates/      CLAUDE.md, SETUP_CHECKLIST.md, context/*.md for new projects
   references/ux-principles.md          UX/UI best practices used by the design and QA skills
   references/wcag-2.2.md               WCAG 2.2 AA checklist for designers
@@ -105,6 +106,17 @@ scripts/build-plugin.sh                checks + builds chili-design.plugin
 ```
 
 ## Changelog
+**0.19.1**
+- `chili-brand`: new step **0. Deck gate** — before a deck is built: a new Figma file for the deck, the Chili brand library linked to it (checked, Claude asks the designer to enable it) and the content. Content comes from the designer, or Claude collects it only on an explicit «find the content yourself» — with sources, nothing invented, outline approved before the slide plan. Eval case `branch/brand-deck-gate`.
+
+**0.19.0**
+- New skill **`chili-brand`** for Chili Labs' own brand materials (client decks, webinar/event slides, social posts, event and blog covers). References in `references/brand/`: `rules.md` (brand edition of «avoid the AI look» — caps headlines, big numbers, 3D and blue backgrounds allowed in brand work; replaces UI step 0 for this work), `tokens.md` (palette, GT Walsheim Pro + Condensed Black + Barlow % + Montserrat tagline, radii 60/40/pill, slide grid), `presentations.md` (frame, modes, Slides-template catalogue, deck structure), `layouts.md` (central-block layout families, variation axes, variety rules, exploration step), `elements.md`, `social.md`, `voice.md` (EN only, facts to verify).
+- `taste/core.md`: pointer — brand materials follow `references/brand/rules.md`.
+
+**0.18.1**
+- `ui-craft`: new step **0. Visual rules** (always on, override references): our projects' UI first (project screens, then `chili/craft.md`); no `·` dots as text separators; no all-caps in chips, captions, subtitles and eyebrows; no strokes on cards and elements unless the project already uses them or the designer asks (focus indicator excepted). Added to the self-check and to `taste/core.md` «Avoid the AI-generic look».
+- `taste/core.md` «Avoid the AI-generic look» extended from designer write-ups on AI tells: gradient text and glows, border + big shadow, pill badge above the headline, icon squares over headings, cards as the default container, hero-metric cliché, neon dark mode, second-wave palettes (cream + terracotta, near-black + acid green), vague copy and placeholders, the «AI made this?» test.
+
 **0.18.0**
 - `new-task`: **«Same as last time»**. The answers to UI approach, references, creativity and variants are saved per work type in `task_defaults.last` of the project config; the next task of that type asks one question instead of up to four. «Change» opens the full menu; «reset task settings» clears the saved answers; `task_defaults.remember: false` switches it off. Reference links and images are never saved.
 - `design-qa`: **state matrix** — every screen the task touches × default / empty / loading / error / offline / long text (`references/state-matrix.md`). Missing cells become findings with severity; QA offers to add the missing states and hands off to the build skill.
