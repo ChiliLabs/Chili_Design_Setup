@@ -32,8 +32,20 @@ Own-words craft principles. Cite as (UI craft) or the underlying law/guideline. 
 - Purposeful: explains change of state or place; 150–300 ms for UI transitions; respect «reduce motion».
 
 ## Avoid the «AI-generic» look
+For client app UI. Chili Labs' own brand materials (decks, posts, covers) follow `../brand/rules.md` instead.
 - No default purple–blue gradients, random glassmorphism, emoji as icons, centred everything, identical card grids for unlike content, decorative 3D blobs, over-rounded pills everywhere.
 - No lorem ipsum, no fake perfect data; no more than one visual trick per screen.
+- No `·` / `•` dots as text separators; use separate layers, line breaks or spacing.
+- No all-caps in chips, tags, captions, subtitles or eyebrow labels — sentence case.
+- No outlines on cards and elements by default (outlined cards, chips, secondary buttons, inputs); use surface steps and spacing. Strokes only when the project already uses them or the designer asks.
+- No gradient text, glows around text/buttons, 1 px border + big blurred shadow combos.
+- No pill badge above the headline («New», «Beta») and no icon-in-a-rounded-square above every heading.
+- Cards are not the default container: use them only for separate, actionable objects; group the rest with spacing and surface steps.
+- No hero-metric cliché (big number + tiny label + gradient accent) unless the number is the point of the screen.
+- No dark mode with neon accents as a shortcut to «cool».
+- No «second-wave» defaults either: cream + terracotta, near-black + acid green. Colour comes from the project brand.
+- Copy: no vague slogans («unlock your potential»), no John Doe / Acme; write the real product's words and plausible data.
+- Test: if someone told «AI made this» would believe it at once, rework it.
 
 ## Platform feel
 - iOS: large titles, sheets, SF-style spacing, native controls where possible (HIG).

@@ -14,6 +14,13 @@ Always: UX principles (`../../references/ux-principles.md`), WCAG 2.2 AA (`../..
 
 Language in Figma: copy inside mockups in the project UI language (`language.ui`); page, section, frame and layer names, annotations and labels (`Variant A`, `Proposal`) always in English. Never write Russian in Figma unless it is a UI language of the project.
 
+## 0. Visual rules (always, every `ui` mode)
+Hard rules from the Chili team; they override references, UI/UX Pro Max and the taste library. Only the project DS or an explicit designer request can lift a rule.
+- **Our projects first.** Start from the current project's approved Figma screens; where the project has no answer, calibrate with Chili projects (`../../references/taste/chili/craft.md`, numbers and principles only). Generic web or «landing page» styling is not a reference.
+- **No dots as separators.** Never join text with `·`, `•` or a centred dot (`Chili Labs · November 2026`, `Buttons · 20 px`, `1 · Colour system`). Use separate text layers, a line break, spacing or a comma instead.
+- **No caps in chips and secondary text.** Chips, tags, badges, subtitles, captions, overlines/eyebrows and helper text in sentence case. No all-caps labels above titles.
+- **No strokes by default.** No borders/outlines on cards, chips, buttons, inputs, list items or containers. Group and separate with surface colour steps, spacing and soft fills; secondary button = tonal or text button, not outlined. Strokes only if the project already uses them for that element or the designer asks. Exception: focus indicator (WCAG 2.4.7, 2.4.11). If an input fill doesn't reach 3:1 against the background (WCAG 1.4.11), flag it to the designer instead of adding a stroke.
+
 ## 1. Collect references (only the chosen sources)
 - **My references** — analyse each link/image: what exactly to take (layout, hierarchy, typography, colour, density, components, motion) and what not to take. If a link can't be opened, say so and ask for a screenshot.
 - **Mobbin** — use skill `pattern-research` (short mode) if not already done.
@@ -37,4 +44,4 @@ For `ui=extend` / `ui=free`, `goal=direction`, or when the designer asks for bol
 - `foundation` (work type «UI foundation», greenfield) — follow the Chili DS template structure (3 token layers, naming, type scale, spacing, effects, grid) with the project's brand colours; on the output page, in the task Section: colour palette with roles (light/dark), type scale, spacing/grid, radii/elevation, and 6–10 core components (button set, input, card, list item, tab bar/nav, chip, toast, empty state) with states. Use Figma variables/styles when tooling allows; **do not publish a library** — propose it to the designer.
 
 ## 4. Self-check before reporting
-Hierarchy readable in 3 seconds · one primary action · aligned to grid · consistent radii/spacing · contrast in every theme (WCAG 1.4.3, 1.4.11) · real content · states covered · nothing that looks «AI-generic» (see `taste/core.md`). For `foundation`/`screen` built in Figma, finish with skill `design-validate` (report → fix on confirmation).
+Visual rules from step 0 (no dot separators, no caps in chips/secondary text, no strokes unless the project uses them) · Hierarchy readable in 3 seconds · one primary action · aligned to grid · consistent radii/spacing · contrast in every theme (WCAG 1.4.3, 1.4.11) · real content · states covered · nothing that looks «AI-generic» (see `taste/core.md`). For `foundation`/`screen` built in Figma, finish with skill `design-validate` (report → fix on confirmation).
