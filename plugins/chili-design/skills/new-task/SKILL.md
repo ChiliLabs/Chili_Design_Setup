@@ -1,6 +1,6 @@
 ---
 name: new-task
-description: Intake menu for a new design task in any configured project. Use whenever the designer asks to start a new task (in any language, e.g. «new task») or types /new-task. Builds the menu from context/project-config.md (project type, products, platforms, work types), asks how to work (analysis, wireframe in chat, Figma), the UI approach and reference sources, collects Jira and Figma, then routes to the matching skill.
+description: Intake menu for a new design task in any configured project. Use whenever the designer asks to start a new task (in any language, e.g. «new task») or types /new-task. Builds the menu from context/project-config.md (project type, products, platforms, work types), asks how to work (analysis, wireframe in chat, Figma), the UI approach and reference sources — or offers «Same as last time» from the answers saved for the project — collects Jira and Figma, then routes to the matching skill.
 argument-hint: "[optional: Jira URL or short description]"
 ---
 
@@ -17,6 +17,7 @@ Everything project-specific comes from **`context/project-config.md`**. This ski
 ## Step 0 — Load the project config
 - Project folder = the connected folder (or working directory) that contains `context/project-config.md`; if several do, ask which project. Read its YAML block and the project's `CLAUDE.md`. If the folder has no `context/` but a Claude Project is attached, read `context/project-config.md` from the project (`project_read`). Read only the config and `CLAUDE.md` here; other `context/*.md` are read later by the workflow skill, only the sections it needs. If the config is missing or still has `<fill>` values in `products`, stop and say: «The project is not set up yet — ask to set up the project» (skill `project-setup`). Do not guess.
 - `project_type` missing → treat as `existing`. `design_system_ready` missing → `true`. `work_types[].project_types` missing → item applies to every type. `connectors` missing → `ask: true`, `default: [figma, atlassian]`.
+- `task_defaults` missing → `remember: true`, `last: {}`.
 - `external_skills` missing → `[]`. Check each entry against the skills available in this session; missing → skip it in this task and add one line to the summary: «Not installed for you: <label>».
 - Ask questions in `language.chat` (default Russian). If the designer's first message or `$ARGUMENTS` already answers something (Jira link, Figma link, work type, mode, number of variants), skip that question.
 - AskUserQuestion allows max 4 questions per call and 2–4 options per question (free text is always available). Skip any question whose answer is fixed by the config.
@@ -38,6 +39,17 @@ Everything project-specific comes from **`context/project-config.md`**. This ski
 
 ## Block 2 — UI approach, references, variants
 Skip the whole block for `design-qa`, `motion`, `store-assets`.
+
+### Shortcut — «Same as last time»
+`task_defaults.last.<work type id>` holds the answers to questions 6, 7, 7b, 8 from the previous task of this work type in this project. Use the shortcut when `task_defaults.remember` is not `false` and that entry exists; otherwise ask Block 2 in full.
+1. Check the saved values against this task and drop the ones that no longer apply: `ui: system` while `design_system_ready: false`; `Mobbin` when the Mobbin connector is not selected in question 5; an `external_skills` source that is not available in this session; any value the config now fixes (`default_ui_approach` ≠ `auto` wins). An answer already given in the designer's message or `$ARGUMENTS` wins over the saved one.
+2. Ask ONE question instead of Block 2 — **«Settings for this task?»** (header `Settings`):
+   - `Same as last time (Recommended)` — description = the saved values in one line: `UI: … · References: … · Creativity: … · Variants: …` (only the ones that apply to this work type)
+   - `Change` — ask Block 2 as usual; in each question add «last time» to the description of the saved option.
+   Placement: its own one-question call after Block 1. If the work type is already known from the designer's message and the Block 1 call has fewer than 4 questions, put it into the Block 1 call.
+3. `Same as last time` chosen → skip questions 6, 7, 7b, 8, except the ones whose saved value was dropped in step 1 or was never saved — ask only those, in one call.
+4. `My references` among the saved sources → still ask for the links or images: references are per task and never saved.
+5. The designer says «reset task settings» (any wording) → set `task_defaults.last: {}` and ask Block 2 in full.
 
 6. **«UI approach?»** (header `UI`) — skip if `default_ui_approach` ≠ `auto`:
    - `Strictly design system` → `ui=system`: existing components and tokens only. Hide this option if `design_system_ready: false`.
@@ -95,11 +107,14 @@ Mode: analyze | wireframe | build
 UI: strictly DS | DS + improvements | new visual
 References: <mine / Mobbin / ui-craft taste / Chili projects / connected skills / none>
 Creativity: safe | bold | wild
+Settings: same as last time | asked (saved for next time)
 Extra skills: <labels by stage | none>
 Variants: N
 Output: <chat for a wireframe | page «<output.page_name>» → section «<section name>»>
 Open questions: <if any>
 ```
+
+Once the designer confirms the summary, save the Block 2 answers before running anything (skip if `task_defaults.remember: false` or Block 2 was skipped): write `task_defaults.last.<work type id>: {ui, references, creative, variants, updated: <YYYY-MM-DD>}` to `context/project-config.md` — in the folder and in the attached Claude Project, the same way as other context updates. Only the keys that applied to this task; overwrite the previous entry for this work type; change nothing else in the file. Never save reference links, images, task keys or Figma links. If the write fails, continue and say so in one line.
 
 Then run, in this order:
 1. **References** (only those selected): `Mobbin` → skill `pattern-research` (short mode: 5–8 examples + patterns); `My references` → analyse the provided links/images (what to take: layout, hierarchy, typography, colour, density, interaction); `ui-craft taste` → skill `ui-craft` (direction only); `Chili projects` → skill `ui-craft` with `refs=chili` (craft specs + idea bank, principles only); `UI/UX Pro Max` → skill `ui-ux-pro-max:ui-ux-pro-max` (separate plugin; if not installed, say so and continue without it) — take style, palette, font pairing and UX guidelines for the product type, then adapt to the project DS. Summarise the chosen direction in 3–5 lines before designing.
@@ -117,4 +132,4 @@ Then run, in this order:
 - `ui=system` → only the product's `design_system` libraries. `ui=extend` → library first; every new component/style is labelled `Proposal`. `ui=free` → new visual allowed. In all cases respect `themes`, UX principles and WCAG 2.2 AA.
 - Never invent anything listed in `never_invent`, and never invent business rules in any mode — take them from the task or list as open questions.
 - Report Figma links only after the tool confirms the write.
-- Project context: when the designer confirms new project facts (flow, rule, component, link) or asks to update the context, update the relevant `context/*.md` in the folder and in the attached Claude Project (`project_write`); show the change in 1–3 lines first. No per-task logs.
+- Project context: when the designer confirms new project facts (flow, rule, component, link) or asks to update the context, update the relevant `context/*.md` in the folder and in the attached Claude Project (`project_write`); show the change in 1–3 lines first. No per-task logs (`task_defaults.last` is not a log: one overwritten entry per work type, saved without asking).

@@ -17,6 +17,7 @@ Apply when designing (feature-update, flow-builder, ui-variations) and when revi
 
 ## 2. States — design every state the change touches
 Default · loading (skeleton for content, spinner only for short actions) · empty (explains why + next action) · error (what happened + how to fix + retry) · success/confirmation · disabled (and why) · offline/no permission · partial data / very long data · first-time vs returning user · subscriber vs non-subscriber if relevant.
+Self-check before hand-off: `state-matrix.md` (same folder) — screen × default / empty / loading / error / offline / long text; `design-qa` reports every missing cell.
 
 ## 3. Feedback and control (NN/g heuristics — details in `nngroup.md`)
 - Visible system status: immediate response to every tap (pressed state, progress).
