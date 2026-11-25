@@ -8,3 +8,6 @@
 
 # Eval run output
 plugins/chili-design/evals/results/
+
+# Client project cards moved out of the plugin — copy each into its project folder context/design-system.md
+_project-cards/

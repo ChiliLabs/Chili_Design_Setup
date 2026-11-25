@@ -1,12 +1,10 @@
 ---
 name: new-task
-description: Intake menu for a new design task in any configured project. Use whenever the designer asks to start a new task (in any language, e.g. «new task») or types /new-task. Builds the menu from context/project-config.md (project type, products, platforms, work types), asks how to work (analysis, wireframe in chat, Figma), the UI approach and reference sources — or offers «Same as last time» from the answers saved for the project — collects Jira and Figma, then routes to the matching skill.
+description: Start any new design task — a short intake menu from context/project-config.md (work type, product, mode, UI approach, references or «Same as last time»), then Jira and Figma, then the right workflow. Use when the designer asks for a new task (any language, e.g. «new task») or types /new-task.
 argument-hint: "[optional: Jira URL or short description]"
 ---
 
 # New task — intake menu (project-agnostic)
-
-Designer-facing text in this file (questions, options, messages) is written in English — say it in `language.chat` (default Russian).
 
 Writing: short, no filler — `../../references/writing.md` (applies to chat, plans, reports, annotations).
 
@@ -30,7 +28,7 @@ Everything project-specific comes from **`context/project-config.md`**. This ski
    - `Analysis first (Recommended)` → `analyze`: plan and questions, no drawing
    - `Wireframe in chat` → `wireframe`: quick sketch in the chat, can move to Figma later
    - `Straight to Figma` → `build`: drawing on the page «<output.page_name>»
-   For `design-qa`, `motion`, `store-assets` skip this question (QA is always `review`).
+   For `design-qa` skip this question (QA is always `review`).
 5. **«Which connectors does this task need?»** (header `Connectors`, **multiSelect**) — skip if `connectors.ask: false` (then use `connectors.default`). Options (`(Recommended)` on those in `connectors.default`):
    - `Figma` — read and draw mockups
    - `Jira / Confluence` — the task and project docs
@@ -38,7 +36,7 @@ Everything project-specific comes from **`context/project-config.md`**. This ski
    Placement: in this Block 1 call if it has fewer than 4 questions; otherwise first in the Block 2 call; if Block 2 is skipped, as its own one-question call. Nothing selected → chat and `context/` files only.
 
 ## Block 2 — UI approach, references, variants
-Skip the whole block for `design-qa`, `motion`, `store-assets`.
+Skip the whole block for `design-qa` and work types with `skill: none`.
 
 ### Shortcut — «Same as last time»
 `task_defaults.last.<work type id>` holds the answers to questions 6, 7, 7b, 8 from the previous task of this work type in this project. Use the shortcut when `task_defaults.remember` is not `false` and that entry exists; otherwise ask Block 2 in full.
@@ -62,7 +60,6 @@ Skip the whole block for `design-qa`, `motion`, `store-assets`.
    - `ui-craft taste` — built-in base of principles and benchmarks (skill `ui-craft`)
    - `Chili projects` — measured radii, spacing, typography, components and an idea bank from our past projects (opt-in; never applied as a style)
    - one option per available `external_skills` entry with `stage: references` (label — `use_for`). More than 4 options in total → merge them into `Connected libraries` and ask a follow-up with the list.
-   - Legacy: `external_skills` is empty and `ui-ux-pro-max:ui-ux-pro-max` is available → keep the option `UI/UX Pro Max` — styles, palettes, font pairings and UX guidelines by product type.
    Nothing selected → work from the design system (if any) and UX principles only.
 7b. **«How creative?»** (header `Creativity`) — only if `ui` ≠ `system` or the work type is `ui-variations`:
    - `Safe` — within the design system: layout, hierarchy, content, micro-interactions
@@ -126,10 +123,4 @@ Then run, in this order:
 4. Connected skills (`external_skills`, only those available): `stage: references` → invoke by `id` in step 1 if selected; `stage: build` → pass as `extra_skills` to the work-type skill, which consults them while designing; `stage: review` → after build and in design-qa offer «Run <label> check?»; `stage: manual` → only on request. They never override the project DS or output rules. Work types with `skill: none` → work from `CLAUDE.md` and ask the extra questions in `asks`.
 
 ## Output rules (all workflows)
-- New screens only on the page `output.page_name` (default «Playground AI») of the selected product's Figma file; create the page if missing and tell the designer. One Section per task, named by `output.section_naming` (English).
-- Language in Figma: copy inside mockups in the project UI language (`language.ui`); page, section, frame and layer names, annotations and labels (`Variant A`, `Proposal`) always in English. Never write Russian in Figma unless it is a UI language of the project.
-- If `output.protect_existing: true` — never edit, move or delete existing screens; duplicate into the task Section and edit the copy. Edit originals only on explicit request in this chat.
-- `ui=system` → only the product's `design_system` libraries. `ui=extend` → library first; every new component/style is labelled `Proposal`. `ui=free` → new visual allowed. In all cases respect `themes`, UX principles and WCAG 2.2 AA.
-- Never invent anything listed in `never_invent`, and never invent business rules in any mode — take them from the task or list as open questions.
-- Report Figma links only after the tool confirms the write.
-- Project context: when the designer confirms new project facts (flow, rule, component, link) or asks to update the context, update the relevant `context/*.md` in the folder and in the attached Claude Project (`project_write`); show the change in 1–3 lines first. No per-task logs (`task_defaults.last` is not a log: one overwritten entry per work type, saved without asking).
+`../../references/design-workflow.md` §2–4: output page and Section, protect existing screens, language in Figma, UI approach, `never_invent`, links only after confirmed writes, context updates. Every workflow reads it.

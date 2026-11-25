@@ -84,18 +84,4 @@ work_types:              # project_types: which project types show this item in 
     skill: design-qa
     project_types: [existing, greenfield]
     enabled: true
-  - id: motion
-    label: Motion / visual assets
-    menu_hint: Animation, graphics, illustrations
-    skill: none
-    asks: [style reference, source materials, export format]
-    project_types: [existing, greenfield]
-    enabled: false
-  - id: store-assets
-    label: Store assets
-    menu_hint: Store screenshots from a template
-    skill: none
-    asks: [template link, sizes, locales]
-    project_types: [existing]
-    enabled: false
 ```

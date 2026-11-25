@@ -95,11 +95,10 @@ for (const file of mdFiles) {
       if (!skills.includes(m[1])) err(`${rel(file)}: refers to skill \`${m[1]}\`, which does not exist`);
     }
   }
-  const outsideQuotes = text.replace(/«[^»]*»/g, '');
-  if (/[А-Яа-яЁё]/.test(outsideQuotes)) warn(`${rel(file)}: Cyrillic outside «…» — plugin files are English only`);
+  if (/[А-Яа-яЁё]/.test(text)) err(`${rel(file)}: contains Cyrillic — plugin files are English only`);
 }
-for (const m of read(join(plugin, 'references', 'ux-principles.md')).matchAll(/`([\w-]+\.md)`/g)) {
-  if (!existsSync(join(plugin, 'references', m[1]))) err(`references/ux-principles.md: broken link ${m[1]}`);
+for (const m of read(join(plugin, 'references', 'principles.md')).matchAll(/`([\w-]+\.md)`/g)) {
+  if (!existsSync(join(plugin, 'references', m[1]))) err(`references/principles.md: broken link ${m[1]}`);
 }
 
 // ---------- 4. project config template ----------

@@ -2,6 +2,9 @@
 
 Applies to everything the plugin writes: chat replies, plans, reports, questions, QA findings, Figma annotations, Jira-ready text. Russian and English alike.
 
+## Language
+- Plugin files are written in English. Say designer-facing text (questions, options, messages, reports) in `language.chat` (default Russian).
+
 ## Rules
 - Answer or result first. No intro («Great!», «Let's break it down»), no outro («Let me know if you need anything»), no restating the request.
 - One idea per sentence, one line per bullet. Cut adjectives that don't change meaning.

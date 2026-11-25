@@ -1,12 +1,10 @@
 ---
 name: project-setup
-description: Set up a client design project for the Chili design workflows — an existing product (finds it in Jira/Figma) or a new project (manual input). Use when the designer asks to set up a project (in any language, e.g. «setup project») or types /project-setup, or when new-task reports that the project is not configured. Writes CLAUDE.md and context/*.md to the project folder and saves the context to the attached Claude Project.
+description: Set up a client design project — an existing product (found in Jira/Figma) or a new one (manual input). Writes CLAUDE.md and context/*.md and saves them to the Claude Project. Use for «setup project» (any language), /project-setup, or when new-task says the project is not configured.
 argument-hint: "[optional: project name]"
 ---
 
 # Project setup
-
-Designer-facing text in this file (questions, options, messages) is written in English — say it in `language.chat` (default Russian).
 
 Writing: short, no filler — `../../references/writing.md` (applies to chat, plans, reports, annotations).
 
@@ -62,7 +60,7 @@ Run skill `project-skills` Steps 1–3: show the skills available in this sessio
 Copy the templates from `templates/` next to this SKILL.md into the project folder (`CLAUDE.md`, `SETUP_CHECKLIST.md`, `context/*.md`) — never overwrite existing files; update them in place. Then fill:
 - `context/project-config.md` — YAML in place (keys unchanged).
 - `context/project-context.md` — about the project (domain, description, docs), product, roles, JTBD (*derived* vs *confirmed*), flows with Figma references, constraints, open questions. Keep it compact: short bullets and tables, links instead of long text.
-- `context/design-system.md` — libraries, token/component naming, key components, constraints (greenfield: what exists so far). Compare with the Chili DS template (`../../references/chili-ds-template.md`): fill «Mapping to Chili DS template» — what matches, what's missing; no DS → «baseline = Chili DS template».
+- `context/design-system.md` — libraries, token/component naming, key components, constraints (greenfield: what exists so far). Compare with the Chili DS template (`../../references/chili-ds-template.md`): fill «Mapping to Chili DS template» — what matches, what's missing; no DS → «baseline = Chili DS template». Existing product → fill «Project card» from approved Figma screens (tokens via `get_variable_defs`, sizes from layers); unknown → `<fill>`.
 - `context/source-map.md` — verified links (Jira, Figma, Confluence/docs), access level, task format, source precedence.
 - `CLAUDE.md` — ≤80 lines: keep the «Role» block as is and replace `<domain>` with the project's domain (e.g. «education / LMS», «fintech»; unknown → «this product's domain»); then project specifics only — don't repeat what the skills already say.
 - `SETUP_CHECKLIST.md` — tick only what was actually verified.

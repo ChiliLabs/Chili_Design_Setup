@@ -1,14 +1,12 @@
 ---
 name: project-skills
-description: Connect skills from other plugins and libraries (UI/UX Pro Max, Mobbin, design, mobile-app-design…) to the current project so new-task and the workflows can offer them. Use when the designer types /project-skills (or /chili-design:project-skills), asks which skills can be connected, wants to add or remove a skill from the project (in any language, e.g. «подключить скил»), or when project-setup reaches the skills step.
+description: Connect or remove skills from other plugins (UI/UX Pro Max, Mobbin, design, mobile-app-design…) for this project so new-task can offer them. Use for /project-skills, «connect a skill» (any language), or the project-setup skills step.
 argument-hint: "[optional: add <name> | remove <name> | all]"
 ---
 
 # Project skills — connect external skills to the project
 
 Named `project-skills` (not `skills`) because `/skills` is a built-in Claude command that lists all skills.
-
-Designer-facing text in this file (questions, options, messages) is written in English — say it in `language.chat` (default Russian).
 
 Writing: short, no filler — `../../references/writing.md`.
 

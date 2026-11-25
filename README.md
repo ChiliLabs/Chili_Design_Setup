@@ -66,7 +66,7 @@ claude plugin eval . --runs 1 --ablation none --scaffold     # quick regression:
 claude plugin eval . --tag trigger --runs 1 --ablation none   # only «the phrase starts the right skill»
 claude plugin eval . --scaffold                               # full: 3 runs per case + no-plugin baseline
 ```
-- `evals/trigger/` — 14 designer phrases, each must start the right skill («новая задача» → `new-task`, «сделай короче» → `concise`…).
+- `evals/trigger/` — 14 designer phrases, each must start the right skill («new task» → `new-task`, «make it shorter» → `concise`…).
 - `evals/negative/` — 2 unrelated requests that must start no skill.
 - `evals/branch/` — 5 routing cases: project not configured → points to setup; «check the frame» → `design-validate` without the menu; configured project → summary routes to `feature-update`; «same as last time» reuses `task_defaults`; `design-qa` builds the state matrix. Two of them create a demo project with `scaffold.sh`, hence `--scaffold`.
 - New skill or new branch → add a case: copy a folder, change `prompt.md` and `graders/`.
@@ -81,8 +81,7 @@ plugins/chili-design/
   .claude-plugin/plugin.json           name + version
   skills/<skill>/SKILL.md              14 skills
   skills/project-setup/templates/      CLAUDE.md, SETUP_CHECKLIST.md, context/*.md for new projects
-  references/ux-principles.md          UX/UI best practices used by the design and QA skills
-  references/wcag-2.2.md               WCAG 2.2 AA checklist for designers
-  references/nngroup.md                Nielsen Norman Group key guidance (summary)
-  references/taste/                    taste library: index, core (visual craft), patterns/ (UX flows), platform/ (surfaces, navigation, iOS, Android, Flutter), chili/ (opt-in: craft specs, idea bank, project cards), creative.md
+  references/principles.md            UX/UI principles: Laws of UX, NN/g guidance, WCAG 2.2 AA checklist
+  references/design-workflow.md       shared rules for the design workflows: UX quality, UI approach, output, language, validation
+  references/taste/                    taste library: index, core (visual craft), patterns/ (UX flows), platform/ (surfaces, navigation, iOS, Android, Flutter), chili/ (opt-in: craft specs, idea bank), creative.md
 ```
