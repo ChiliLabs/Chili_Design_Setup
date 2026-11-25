@@ -15,6 +15,13 @@
 - Spacing & radius scale: [fill]
 - Missing vs template (states, components, effects): [fill]
 
+## Project card (existing products)
+- Product: [fill — one line]
+- Visual: [fill — key colours, type, radii, spacing from tokens]
+- Signature patterns: [fill — 3–7 bullets with screens/flows]
+- Ideas worth remixing (principle, not look): [fill]
+- Watch out: [fill]
+
 ## Constraints
 - Favor existing instances and variants over custom frames or detached components.
 - Preserve Auto Layout, variable bindings, and semantic names when tooling supports this.

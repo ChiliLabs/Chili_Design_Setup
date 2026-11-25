@@ -71,7 +71,7 @@ claude plugin eval . --runs 1 --ablation none --scaffold     # quick regression:
 claude plugin eval . --tag trigger --runs 1 --ablation none   # only «the phrase starts the right skill»
 claude plugin eval . --scaffold                               # full: 3 runs per case + no-plugin baseline
 ```
-- `evals/trigger/` — 14 designer phrases, each must start the right skill («новая задача» → `new-task`, «сделай короче» → `concise`…).
+- `evals/trigger/` — 14 designer phrases, each must start the right skill («new task» → `new-task`, «make it shorter» → `concise`…).
 - `evals/negative/` — 2 unrelated requests that must start no skill.
 - `evals/branch/` — 5 routing cases: project not configured → points to setup; «check the frame» → `design-validate` without the menu; configured project → summary routes to `feature-update`; «same as last time» reuses `task_defaults`; `design-qa` builds the state matrix. Two of them create a demo project with `scaffold.sh`, hence `--scaffold`.
 - New skill or new branch → add a case: copy a folder, change `prompt.md` and `graders/`.
@@ -86,17 +86,15 @@ plugins/chili-design/
   .claude-plugin/plugin.json           name + version
   skills/<skill>/SKILL.md              14 skills
   skills/project-setup/templates/      CLAUDE.md, SETUP_CHECKLIST.md, context/*.md for new projects
-  references/ux-principles.md          UX/UI best practices used by the design and QA skills
-  references/wcag-2.2.md               WCAG 2.2 AA checklist for designers
-  references/nngroup.md                Nielsen Norman Group key guidance (summary)
+  references/principles.md            UX/UI principles: Laws of UX, NN/g guidance, WCAG 2.2 AA checklist
+  references/design-workflow.md       shared rules for the design workflows: UX quality, UI approach, output, language, validation
   references/taste/index.md            Taste library index: which file to read when
   references/taste/core.md             UI craft taste guide (visual craft, anti «AI-generic»)
   references/taste/patterns/*.md       UX flow patterns: forms, search-filter, onboarding, auth, permissions, subscription-iap, payment-checkout (iOS / Android / Flutter notes)
   references/taste/platform/*.md       surfaces (sheet/modal/dialog rules), navigation, ios-native, android-native, flutter
   references/taste/creative.md         creative exploration: levels, axes, techniques, guardrails
-  references/taste/chili/craft.md      opt-in: measured radii, spacing, type, components from Chili projects
+  references/taste/chili/craft.md      opt-in: calibration ranges from Chili projects
   references/taste/chili/ideas.md      opt-in: idea bank from Chili projects
-  references/taste/chili/projects/*.md   project cards: balcia, totherescue, rover, ganbei, twino
   references/writing.md                Writing rules: short, no filler, length limits
   references/state-matrix.md           State matrix: screen × default / empty / loading / error / offline / long text, cell values, severity
   references/chili-ds-template.md      Chili mobile DS template: tokens, type scale, spacing, effects, grids, component naming
@@ -106,6 +104,20 @@ scripts/build-plugin.sh                checks + builds chili-design.plugin
 ```
 
 ## Changelog
+**0.21.0**
+- New `references/design-workflow.md`: UX quality, UI approach, output and language in Figma, facts and context, final `design-validate` — one place instead of copies in `feature-update`, `flow-builder`, `ui-variations`, `ui-craft` and `new-task` «Output rules».
+- «Designer-facing text in English → say it in `language.chat`» moved to `writing.md`.
+- `new-task`: removed the legacy UI/UX Pro Max option and the disabled `motion` / `store-assets` work types (also from the config template).
+- Shorter descriptions for `new-task`, `project-setup`, `ui-craft`, `project-skills`, `menu`, `design-validate`.
+- `chili/craft.md`: per-client tables replaced with anonymised calibration ranges (1194 → ~500 words).
+
+**0.20.0**
+- `references/ux-principles.md`, `nngroup.md` and `wcag-2.2.md` merged into one `references/principles.md` (Laws of UX, NN/g, WCAG 2.2 AA checklist), duplicates removed; all skills and `check-plugin.mjs` point to it.
+- Client project cards (`taste/chili/projects/*`) removed from the plugin: a project card is now a section of that project's `context/design-system.md` (template + `project-setup`). `chili/craft.md` and `chili/ideas.md` stay as opt-in cross-project references.
+
+**0.19.2**
+- No Russian in the plugin: removed Russian example phrases from the `chili-brand`, `menu` and `project-skills` descriptions and from the README. `check-plugin.mjs` now fails on any Cyrillic in packaged files (eval prompts excluded — they test Russian triggers and are not packaged).
+
 **0.19.1**
 - `chili-brand`: new step **0. Deck gate** — before a deck is built: a new Figma file for the deck, the Chili brand library linked to it (checked, Claude asks the designer to enable it) and the content. Content comes from the designer, or Claude collects it only on an explicit «find the content yourself» — with sources, nothing invented, outline approved before the slide plan. Eval case `branch/brand-deck-gate`.
 

@@ -27,7 +27,7 @@ Goal: agree on structure and flow cheaply before any Figma work. **Never write t
 - `variants` > 1 → label `Variant A / B / C`, same scale, side by side; each with one line on the difference.
 
 ## UX basis
-Apply `../../references/ux-principles.md` (structure, hierarchy, navigation, forms, states) and `../../references/nngroup.md`. In existing projects respect the structure of approved screens unless the task changes it. Don't invent business rules — mark unknowns as questions on the canvas.
+Apply `../../references/principles.md` (structure, hierarchy, navigation, forms, states). In existing projects respect the structure of approved screens unless the task changes it. Don't invent business rules — mark unknowns as questions on the canvas.
 
 ## Iterate
 Accept edits in plain words («move the button down», «add an empty state») and redraw only what changed. Keep a short changelog per iteration.

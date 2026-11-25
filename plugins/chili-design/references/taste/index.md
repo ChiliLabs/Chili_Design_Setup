@@ -25,9 +25,8 @@ Patterns are UX guidance, not business truth: prices, limits, legal texts, payme
 | `platform/android-native.md` | native Android behaviour and components (Material 3) |
 | `platform/flutter.md` | Flutter projects: platform strategy, cheap vs expensive, adaptive widgets, handoff |
 | `creative.md` | creative exploration: creativity levels (safe / bold / wild), axes to vary, techniques, converge, guardrails. Read for `ui=extend` / `ui=free`, variants, directions, or when asked for bolder options. |
-| `chili/craft.md` | **opt-in** («Chili projects» reference): measured radii, spacing, typography, colour roles and component specs from 5 Chili projects, with calibration ranges. |
+| `chili/craft.md` | **opt-in** («Chili projects» reference): calibration ranges for spacing, radii, typography, colour roles and components from Chili projects. |
 | `chili/ideas.md` | **opt-in**: idea bank of interesting solutions from Chili projects (principle + remix), fuel for `creative.md`. |
-| `chili/projects/<name>.md` | **opt-in**: one project card — `balcia`, `totherescue`, `rover`, `ganbei`, `twino`. Read only the 1–2 closest to the task; cite «(Chili: <project>)». |
 
 ## Platform files
 Read `surfaces.md` (+ `navigation.md` if navigation changes), then the file for the project stack (from `context/design-system.md` / `context/project-context.md`; not recorded → ask the designer once and suggest adding it to `context/design-system.md`): native iOS → `ios-native.md`, native Android → `android-native.md`, Flutter → `flutter.md` (+ the iOS/Android file only for the parts the project adapts per platform).
@@ -45,5 +44,5 @@ Each pattern file uses the same blocks, so skills can quote them:
 - New pattern → copy the block format above, one file per flow, keep it under ~120 lines, add a row to the table.
 - Facts that change (store rules, laws, OS behaviour) → mark with `(check: <month year>)` and re-verify when used.
 - Project-derived rules go to `chili/`, not into generic patterns.
-- New project: Figma link to approved screens → tokens via `get_variable_defs`, sizes via layers → card in `chili/projects/<name>.md` (Product · Visual · Signature patterns · Ideas worth remixing · Watch out) → add a column to `chili/craft.md` → add 1–3 ideas to `chili/ideas.md`.
-- Project cards describe client work: use them as internal references; never copy a client's brand, assets or copy into another client's mockups.
+- New project: Figma link to approved screens → tokens via `get_variable_defs`, sizes via layers → project card (Product · Visual · Signature patterns · Ideas worth remixing · Watch out) in **that project's** `context/design-system.md`, not in the plugin → widen the ranges in `chili/craft.md` if the project falls outside them → add 1–3 ideas to `chili/ideas.md`.
+- `craft.md` and `ideas.md` come from client work: use them as internal references; never copy a client's brand, assets or copy into another client's mockups.

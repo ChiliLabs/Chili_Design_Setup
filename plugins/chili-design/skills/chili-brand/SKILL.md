@@ -1,7 +1,7 @@
 ---
-name: chili-brand
-description: Make Chili Labs' own brand materials in the company style — client presentations, sales/pitch decks, design-concept decks, webinar and event slides, social media posts, event and blog covers. Use when the designer asks for a Chili presentation, deck, slides, post, cover or anything «in our style / by the brandbook» (in any language, e.g. «презентация в нашем стиле», «пост для инстаграма»). Not for client app UI.
 argument-hint: "[what: deck | slide | post | event cover | blog cover] [topic / content] [optional: mode=light|dark|poster|mix]"
+description: Make Chili Labs' own brand materials in the company style — client presentations, sales/pitch decks, design-concept decks, webinar and event slides, social media posts, event and blog covers. Use when the designer asks for a Chili presentation, deck, slides, post, cover or anything «in our style / by the brandbook» (in any language). Not for client app UI.
+name: chili-brand
 ---
 
 # Chili brand

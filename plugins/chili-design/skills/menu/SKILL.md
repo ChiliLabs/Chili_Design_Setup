@@ -1,12 +1,12 @@
 ---
 name: menu
-description: Show everything the designer can use in this project — chili-design commands, skills connected to the project and other skills available in this session — each with a one-line «use it for». Use when the designer types /menu or asks what commands or skills are available, or what Claude can do here (in any language, e.g. «что ты умеешь», «какие есть команды»).
+description: Show the commands and skills available in this project, one line each. Use for /menu or when the designer asks what commands or skills there are, or what Claude can do here (any language, e.g. «what can you do»).
 argument-hint: "[optional: chili | ui | research | review | copy | platform | all]"
 ---
 
 # Menu — what you can use here
 
-Designer-facing text in this file is written in English — say it in `language.chat` (default Russian).
+Writing and language: `../../references/writing.md`.
 
 Read-only: never edits files or config, never calls Figma, Jira or Mobbin. One message, no questions.
 

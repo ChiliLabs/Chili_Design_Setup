@@ -1,6 +1,6 @@
 ---
 name: design-validate
-description: Technical check of Figma frames — spacing on the scale (2, 4, 8, 12, 16, 20, 24, 32, 40…), named layers, colours/text/spacing bound to tokens and styles. Reports first; fixes only after the designer confirms. Runs automatically at the end of build; also on request to check or validate frames (in any language).
+description: Technical check of Figma frames — spacing on the scale, named layers, colours, text and spacing bound to tokens and styles. Reports first, fixes after confirmation. Runs at the end of build; also on request to check or validate frames (any language).
 argument-hint: "[Figma frame URL(s) or node ids]"
 ---
 
@@ -9,7 +9,7 @@ argument-hint: "[Figma frame URL(s) or node ids]"
 Writing: short, no filler — `../../references/writing.md` (applies to chat, plans, reports, annotations).
 
 Input: $ARGUMENTS — frames to check. When called from a workflow skill at the end of `build`: the frames created in this task.
-Run **only on the final result** (not on drafts or intermediate steps). Chat in `language.chat`; layer names in English. Designer-facing text in this file (questions, options, messages) is written in English — say it in `language.chat` (default Russian).
+Run **only on the final result** (not on drafts or intermediate steps). Chat in `language.chat`; layer names in English.
 
 ## 1. Run the check (read-only)
 - Load the figma-use guidance before `use_figma`. Parse node ids from URLs (`node-id=1-2` → `1:2`).
